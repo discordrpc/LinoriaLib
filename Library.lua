@@ -1565,7 +1565,7 @@ do
             Parent = Container;
         });
 
-        function Textbox:SetValue(Text)
+        function Textbox:SetValue(Text, Silent)
             if Info.MaxLength and #Text > Info.MaxLength then
                 Text = Text:sub(1, Info.MaxLength);
             end;
@@ -1580,7 +1580,7 @@ do
             Box.Text = Text;
 
             Library:SafeCallback(Textbox.Callback, Textbox.Value);
-            if Textbox.Changed then
+            if Textbox.Changed and not Silent then
                 Textbox.Changed(Textbox.Value)
             end;
         end;
@@ -1743,7 +1743,7 @@ do
             Func(Toggle.Value);
         end;
 
-        function Toggle:SetValue(Bool)
+        function Toggle:SetValue(Bool, Silent)
             Bool = (not not Bool);
 
             Toggle.Value = Bool;
@@ -1757,7 +1757,7 @@ do
             end
 
             Library:SafeCallback(Toggle.Callback, Toggle.Value);
-            if Toggle.Changed then
+            if Toggle.Changed and not Silent then
                 Toggle.Changed(Toggle.Value)
             end;
         end;
@@ -1926,7 +1926,7 @@ do
             return Round(Library:MapValue(X, 0, Slider.MaxSize, Slider.Min, Slider.Max));
         end;
 
-        function Slider:SetValue(Str)
+        function Slider:SetValue(Str, Silent)
             local Num = tonumber(Str);
 
             if (not Num) then
@@ -1939,7 +1939,7 @@ do
             Slider:Display();
 
             Library:SafeCallback(Slider.Callback, Slider.Value);
-            if Slider.Changed then
+            if Slider.Changed and not Silent then
                 Slider.Changed(Slider.Value)
             end;
         end;
@@ -2312,7 +2312,7 @@ do
             Func(Dropdown.Value);
         end;
 
-        function Dropdown:SetValue(Val)
+        function Dropdown:SetValue(Val, Silent)
             if Dropdown.Multi then
                 local nTable = {};
 
@@ -2335,7 +2335,9 @@ do
             Dropdown:Display();
 
             Library:SafeCallback(Dropdown.Callback, Dropdown.Value);
-            if Dropdown.Changed then Dropdown.Changed(Dropdown.Value) end
+            if Dropdown.Changed and not Silent then 
+                Dropdown.Changed(Dropdown.Value) 
+            end
         end;
 
         DropdownOuter.InputBegan:Connect(function(Input)
